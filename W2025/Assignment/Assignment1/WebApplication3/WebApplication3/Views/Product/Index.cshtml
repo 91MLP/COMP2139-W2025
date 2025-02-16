@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WebApplication3.Models.Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h2>Products</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Product Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Quantity in Stock</th>
+        <th>Low Stock Threshold</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ProductName</td>
+            <td>@item.Category?.CategoryName</td>
+            <td>@item.Price.ToString("C")</td>
+            <td>@item.QuantityInStock</td>
+            <td>@item.LowStockThreshold</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
