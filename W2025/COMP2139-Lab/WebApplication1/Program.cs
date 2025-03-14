@@ -1,7 +1,11 @@
+using WebApplication1.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
@@ -19,6 +23,10 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+app.MapControllerRoute(
+    name:"areas",
+    pattern:"{area:exists}/{controller=Project}/{action=Index}/{id?}"
+    );
 
 app.MapControllerRoute(
     name: "default",
