@@ -11,10 +11,12 @@ namespace WebApplication1.Areas.ProjectManagement.Controllers;
 [Route("[area]/[controller]/[action]")]
 public class ProjectController : Controller
 {
+    private readonly ILogger<ProjectController> _logger;
     private readonly ApplicationDbContext _context;
 
-    public ProjectController(ApplicationDbContext context)
+    public ProjectController(ApplicationDbContext context, ILogger<ProjectController> logger)
     {
+        _logger = logger;
         _context = context;
     }
 
@@ -22,6 +24,7 @@ public class ProjectController : Controller
     [Route("")]
     public async Task<IActionResult> Index()
     {
+        _logger.LogInformation("Accessed HomeController Index at {Time}", DateTimeOffset.Now);
         var projects = await _context.Projects.ToListAsync();
         return View(projects);
     }
@@ -56,10 +59,12 @@ public class ProjectController : Controller
         [Route("Details/{id:int}")]
         public async Task<IActionResult> Details(int id)
      {
+         _logger.LogInformation("Accessed HomeController Details at {Time}", DateTimeOffset.Now);
          //Database: Retrieve project from  database
          var project = await _context.Projects.FirstOrDefaultAsync(p => p.ProjectId == id);
          if (project == null)
          {
+             _logger.LogWarning("Could not find Project with id of {id}",id);
              return NotFound();
          }
 
